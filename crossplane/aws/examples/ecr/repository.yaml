@@ -1,7 +1,7 @@
 apiVersion: ecr.aws.crossplane.io/v1beta1
 kind: Repository
 metadata:
-  name: mastering-gitops
+  name: mastering-kubernetes
   labels:
     region: eu-central-1
 spec:

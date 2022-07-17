@@ -1,0 +1,11 @@
+apiVersion: ecr.services.k8s.aws/v1alpha1
+kind: Repository
+metadata:
+  name: ack-demo-repository
+  annotations:
+    services.k8s.aws/region: eu-central-1
+spec:
+  name: ack-demo-repository
+  imageScanningConfiguration:
+    scanOnPush: true
+  imageTagMutability: MUTABLE

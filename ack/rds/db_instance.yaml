@@ -1,0 +1,19 @@
+apiVersion: rds.services.k8s.aws/v1alpha1
+kind: DBInstance
+metadata:
+  name: mydb-instance
+  annotations:
+    services.k8s.aws/region: eu-central-1
+spec:
+  allocatedStorage: 5
+  dbInstanceClass: db.t3.micro
+  dbInstanceIdentifier: mydb-instance
+  dbSubnetGroupName: mydb-subnet-group
+  engine: postgres
+  engineVersion: "14.1"
+  masterUsername: root
+  masterUserPassword:
+    namespace: default
+    name: mydb-instance-creds
+    key: password
+  multiAZ: False

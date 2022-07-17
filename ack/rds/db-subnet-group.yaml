@@ -1,0 +1,14 @@
+apiVersion: rds.services.k8s.aws/v1alpha1
+kind: DBSubnetGroup
+metadata:
+ name: mydb-subnet-group
+ annotations:
+    services.k8s.aws/region: eu-central-1
+spec:
+ name: mydb-subnet-group
+ description: mydb-subnet-group
+ subnetIDs:
+ - subnet-0c797e2fbcac1d361	
+ - subnet-0890caf220836b048	
+ - subnet-03fbd01d42a2303a3
+ tags: []

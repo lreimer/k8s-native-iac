@@ -1,0 +1,16 @@
+apiVersion: s3.services.k8s.aws/v1alpha1
+kind: Bucket
+metadata:
+  name: ack-demo-bucket
+  annotations:
+    services.k8s.aws/region: eu-central-1
+spec:
+  name: ack-demo-bucket
+  encryption:
+    rules:
+    - applyServerSideEncryptionByDefault:
+        sseAlgorithm: AES256
+  tagging:
+    tagSet:
+    - key: Conference
+      value: Mastering Kubernetes
