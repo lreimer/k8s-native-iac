@@ -38,9 +38,9 @@ kubectl create secret generic aws-credentials -n crossplane-system --from-file=c
 # we could manually install the AWS provider
 # kubectl crossplane install provider crossplane/provider-aws:v0.29.0
 
-# cd crossplane/aws/
-# kubectl apply -n crossplane-system -f provider.yaml
-# kubectl apply -n crossplane-system -f providerconfig.yaml
+cd crossplane/aws/
+kubectl apply -n crossplane-system -f provider.yaml
+kubectl apply -n crossplane-system -f providerconfig.yaml
 
 cd crossplane/aws/examples/
 
