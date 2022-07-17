@@ -1,0 +1,37 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: example-db-client
+  namespace: default
+spec:
+  template:
+    spec:
+      containers:
+      - name: client
+        image: postgres:13
+        command: ['psql']
+        args: ['-c', 'SELECT current_database();']
+        env:
+        - name: PGDATABASE
+          value: postgres
+        - name: PGHOST
+          valueFrom:
+            secretKeyRef:
+              name: example-db-conn
+              key: endpoint
+        - name: PGUSER
+          valueFrom:
+            secretKeyRef:
+              name: example-db-conn
+              key: username
+        - name: PGPASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: example-db-conn
+              key: password
+        - name: PGPORT
+          valueFrom:
+            secretKeyRef:
+              name: example-db-conn
+              key: port
+      restartPolicy: Never

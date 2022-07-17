@@ -1,0 +1,38 @@
+---
+apiVersion: apiextensions.crossplane.io/v1
+kind: CompositeResourceDefinition
+metadata:
+  name: xrepositories.ecr.aws.qaware.de
+spec:
+  group: ecr.aws.qaware.de
+  names:
+    kind: XRepository
+    plural: xrepositories
+  claimNames:
+    kind: Repository
+    plural: repositories
+  defaultCompositionRef:
+    name: xrepositories.ecr.aws.qaware.de
+  versions:
+  - name: v1beta1
+    served: true
+    referenceable: true
+    schema:
+      openAPIV3Schema:
+        type: object
+        properties:
+          spec:
+            type: object
+            properties:
+              parameters:
+                type: object
+                properties:
+                  repositoryName:
+                    type: string
+                  region:
+                    type: string
+                required:
+                  - repositoryName
+                  - region
+            required:
+              - parameters

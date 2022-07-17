@@ -35,13 +35,14 @@ These are basically the `aws_access_key_id` and `aws_secret_access_key` from the
 ```bash
 kubectl create secret generic aws-credentials -n crossplane-system --from-file=credentials=${HOME}/.aws/credentials
 
-cd crossplane/aws/
-
 # we could manually install the AWS provider
 # kubectl crossplane install provider crossplane/provider-aws:v0.29.0
 
+# cd crossplane/aws/
 # kubectl apply -n crossplane-system -f provider.yaml
 # kubectl apply -n crossplane-system -f providerconfig.yaml
+
+cd crossplane/aws/examples/
 
 # create an S3 bucket in eu-central-1
 kubectl apply -f s3/bucket.yaml

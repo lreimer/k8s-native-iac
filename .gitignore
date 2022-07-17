@@ -1,4 +1,5 @@
 .dccache
+*.xpkg
 
 # Logs
 logs

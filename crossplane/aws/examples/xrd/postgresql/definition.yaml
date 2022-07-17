@@ -1,0 +1,49 @@
+---
+apiVersion: apiextensions.crossplane.io/v1
+kind: CompositeResourceDefinition
+metadata:
+  name: xpostgresqlinstances.db.aws.qaware.de
+spec:
+  group: db.aws.qaware.de
+  names:
+    kind: XPostgreSQLInstance
+    plural: xpostgresqlinstances
+  claimNames:
+    kind: PostgreSQLInstance
+    plural: postgresqlinstances
+  defaultCompositionRef:
+    name: xpostgresqlinstances.db.aws.qaware.de
+  connectionSecretKeys:
+    - username
+    - password
+    - endpoint
+    - port
+  versions:
+  - name: v1beta1
+    served: true
+    referenceable: true
+    schema:
+      openAPIV3Schema:
+        type: object
+        properties:
+          spec:
+            type: object
+            properties:
+              parameters:
+                type: object
+                properties:
+                  region:
+                    type: string
+                    default: "eu-central-1"
+                  version:
+                    type: string
+                    default: "12"
+                  dbInstanceClass:
+                    type: string
+                    default: "db.t3.micro"
+                  storageGB:
+                    type: integer
+                required:
+                  - storageGB
+            required:
+              - parameters

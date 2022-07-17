@@ -1,0 +1,13 @@
+apiVersion: db.aws.qaware.de/v1beta1
+kind: PostgreSQLInstance
+metadata:
+  name: example-db
+  namespace: default
+spec:
+  parameters:
+    region: eu-central-1
+    dbInstanceClass: db.t3.small
+    version: "13"
+    storageGB: 20
+  writeConnectionSecretToRef:
+    name: example-db-conn

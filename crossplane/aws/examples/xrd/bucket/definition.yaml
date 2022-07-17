@@ -1,0 +1,38 @@
+---
+apiVersion: apiextensions.crossplane.io/v1
+kind: CompositeResourceDefinition
+metadata:
+  name: xbuckets.s3.aws.qaware.de
+spec:
+  group: s3.aws.qaware.de
+  names:
+    kind: XBucket
+    plural: xbuckets
+  claimNames:
+    kind: Bucket
+    plural: buckets
+  defaultCompositionRef:
+    name: xbuckets.s3.aws.qaware.de
+  versions:
+  - name: v1beta1
+    served: true
+    referenceable: true
+    schema:
+      openAPIV3Schema:
+        type: object
+        properties:
+          spec:
+            type: object
+            properties:
+              parameters:
+                type: object
+                properties:
+                  bucketName:
+                    type: string
+                  region:
+                    type: string
+                required:
+                  - bucketName
+                  - region
+            required:
+              - parameters

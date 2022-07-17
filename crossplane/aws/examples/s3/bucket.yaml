@@ -1,0 +1,19 @@
+apiVersion: s3.aws.crossplane.io/v1beta1
+kind: Bucket
+metadata:
+  name: mastering-gitops
+  annotations:
+    crossplane.io/external-name: mastering-gitops-eu-central-1
+  labels:
+    region: eu-central-1
+spec:
+  deletionPolicy: Delete
+  forProvider:
+    acl: private
+    locationConstraint: eu-central-1
+    serverSideEncryptionConfiguration:
+      rules:
+        - applyServerSideEncryptionByDefault:
+            sseAlgorithm: AES256
+  providerConfigRef:
+    name: providerconfig-aws

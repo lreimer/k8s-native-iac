@@ -1,0 +1,39 @@
+---
+apiVersion: rds.aws.crossplane.io/v1alpha1
+kind: DBCluster
+metadata:
+  name: test-aurora-serverless
+spec:
+  deletionPolicy: Delete
+  forProvider:
+    applyImmediately: true
+    region: eu-central-1
+    availabilityZones:
+      - eu-central-1a
+      - eu-central-1b
+      - eu-central-1c
+    vpcSecurityGroupIDs:
+      - sg-0a4c5663
+    backupRetentionPeriod: 5
+    databaseName: test
+    engine: aurora-postgresql
+    engineMode: serverless
+    engineVersion: "10.14"
+    scalingConfiguration:
+      autoPause: true
+      secondsUntilAutoPause: 300
+      minCapacity: 2
+      maxCapacity: 32
+    storageEncrypted: true
+    skipFinalSnapshot: true
+    enableHTTPEndpoint: true
+    masterUsername: lreimer
+    masterUserPasswordSecretRef:
+      key: password
+      name: test-aurora-admin
+      namespace: crossplane-system
+  writeConnectionSecretToRef:
+    name: test-aurora-serverless
+    namespace: default
+  providerConfigRef:
+    name: providerconfig-aws

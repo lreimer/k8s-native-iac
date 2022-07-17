@@ -1,0 +1,9 @@
+apiVersion: ecr.aws.qaware.de/v1beta1
+kind: Repository
+metadata:
+  namespace: default
+  name: example-repository
+spec:
+  parameters:
+    repositoryName: example-repository
+    region: eu-central-1

@@ -1,0 +1,11 @@
+apiVersion: s3.aws.qaware.de/v1beta1
+kind: Bucket
+metadata:
+  namespace: default
+  name: example-bucket-eu-central-1
+  annotations:
+    crossplane.io/external-name: example-bucket-eu-central-1
+spec:
+  parameters:
+    bucketName: example-bucket-eu-central-1
+    region: eu-central-1
