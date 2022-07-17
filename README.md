@@ -1,6 +1,6 @@
 # K8s-native Infrastructure-as-code
 
-Demo repository for Kubernetes-native infrastructure as code showcases, including Pulumi Operator, Crossplane, ACK and Cluster API.
+Demo repository for Kubernetes-native infrastructure as code showcases, including Pulumi Operator, Crossplane, AWS Controllers for Kubernetes (ACK) and Cluster API.
 
 ## Bootstrapping
 
