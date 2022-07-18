@@ -229,6 +229,11 @@ kubectl delete cluster capi-tenant-cluster
 
 ## Pulumi Demo
 
+```bash
+kubectl create secret generic pulumi-api-secret -n pulumi-system --from-literal=accessToken=pul-4711abcExampleToken
+
+```
+
 
 ## Maintainer
 
