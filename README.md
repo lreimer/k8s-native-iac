@@ -40,63 +40,9 @@ $ kubectl apply -k config/samples
 $ kubectl delete -k config/samples
 ```
 
-## Crossplane Demo
-
-For AWS the configuration needs to reference the required credentials in the form of a secret.
-These are basically the `aws_access_key_id` and `aws_secret_access_key` from the default profile found in the `${HOME}/.aws/credentials` file. With this information we can create a secret and reference it from a provider config resource.
-
-```bash
-kubectl create secret generic aws-credentials -n crossplane-system --from-file=credentials=${HOME}/.aws/credentials
-
-# we could manually install the AWS provider
-# kubectl crossplane install provider crossplane/provider-aws:v0.29.0
-
-cd crossplane/aws/
-kubectl apply -n crossplane-system -f provider.yaml
-kubectl apply -n crossplane-system -f providerconfig.yaml
-
-cd crossplane/aws/examples/
-
-# create an S3 bucket in eu-central-1
-kubectl apply -f s3/bucket.yaml
-aws s3 ls
-
-# create an ECR in eu-central-1
-kubectl apply -f ecr/repository.yaml
-aws ecr describe-repositories
-
-# create Aurora Serverless in eu-central-1
-kubectl apply -f db/aurora-serverless.yaml
-aws rds describe-db-clusters
-kubectl apply -f db/aurora-client.yaml
-
-# use XRD to create an S3 bucket
-kubectl apply -f xrd/bucket/definition.yaml
-kubectl apply -f xrd/bucket/composition.yaml
-kubectl apply -f xrd/bucket/examples/example-bucket.yaml
-
-# use XRD to create an ECR
-kubectl apply -f xrd/repository/definition.yaml
-kubectl apply -f xrd/repository/composition.yaml
-kubectl apply -f xrd/repository/examples/example-repository.yaml
-
-# use XRD to create PostgreSQL instance
-kubectl apply -f xrd/postgresql/definition.yaml
-kubectl apply -f xrd/postgresql/composition.yaml
-kubectl apply -f xrd/postgresql/examples/example-db.yaml
-
-kubectl get postgresqlinstances.db.aws.qaware.de example-db
-kubectl get claim
-
-kubectl get secrets
-kubectl describe secret example-db-conn
-
-kubectl apply -f xrd/postgresql/examples/example-db-client.yaml
-kubectl get pods
-kubectl logs example-db-client-sjdh7
-```
-
 ## ACK Demo
+
+The Amazon controllers for Kubernetes are a lightweight AWS only option to provision cloud infrastructure the K8s-native way.
 
 ```bash
 export ACK_SYSTEM_NAMESPACE=ack-system
@@ -104,6 +50,7 @@ export AWS_REGION=eu-central-1
 export AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query "Account" --output text)
 export OIDC_PROVIDER=$(aws eks describe-cluster --name eks-k8s-iac-cluster --region $AWS_REGION --query "cluster.identity.oidc.issuer" --output text | sed -e "s/^https:\/\///")
 
+# we need to login to the public chart ECR
 aws ecr-public get-login-password --region $AWS_REGION | helm registry login --username AWS --password-stdin public.ecr.aws
 
 # install the S3 controller
@@ -181,13 +128,63 @@ kubectl apply -f ack/rds/db-subnet-group.yaml
 kubectl apply -f ack/rds/db-instance.yaml
 ```
 
+## Crossplane Demo
 
-## Pulumi Demo
+For AWS the configuration needs to reference the required credentials in the form of a secret.
+These are basically the `aws_access_key_id` and `aws_secret_access_key` from the default profile found in the `${HOME}/.aws/credentials` file. With this information we can create a secret and reference it from a provider config resource.
 
+```bash
+kubectl create secret generic aws-credentials -n crossplane-system --from-file=credentials=${HOME}/.aws/credentials
+
+# we could manually install the AWS provider
+# kubectl crossplane install provider crossplane/provider-aws:v0.29.0
+
+cd crossplane/aws/
+kubectl apply -n crossplane-system -f provider.yaml
+kubectl apply -n crossplane-system -f providerconfig.yaml
+
+cd crossplane/aws/examples/
+
+# create an S3 bucket in eu-central-1
+kubectl apply -f s3/bucket.yaml
+aws s3 ls
+
+# create an ECR in eu-central-1
+kubectl apply -f ecr/repository.yaml
+aws ecr describe-repositories
+
+# create Aurora Serverless in eu-central-1
+kubectl apply -f db/aurora-serverless.yaml
+aws rds describe-db-clusters
+kubectl apply -f db/aurora-client.yaml
+
+# use XRD to create an S3 bucket
+kubectl apply -f xrd/bucket/definition.yaml
+kubectl apply -f xrd/bucket/composition.yaml
+kubectl apply -f xrd/bucket/examples/example-bucket.yaml
+
+# use XRD to create an ECR
+kubectl apply -f xrd/repository/definition.yaml
+kubectl apply -f xrd/repository/composition.yaml
+kubectl apply -f xrd/repository/examples/example-repository.yaml
+
+# use XRD to create PostgreSQL instance
+kubectl apply -f xrd/postgresql/definition.yaml
+kubectl apply -f xrd/postgresql/composition.yaml
+kubectl apply -f xrd/postgresql/examples/example-db.yaml
+
+kubectl get postgresqlinstances.db.aws.qaware.de example-db
+kubectl get claim
+
+kubectl get secrets
+kubectl describe secret example-db-conn
+
+kubectl apply -f xrd/postgresql/examples/example-db-client.yaml
+kubectl get pods
+kubectl logs example-db-client-sjdh7
+```
 
 ## CAPI Demo
-
-
 
 ```bash
 # see https://cluster-api-aws.sigs.k8s.io/getting-started.html
@@ -229,6 +226,8 @@ kubectl --kubeconfig=cluster-api/capi-tenant-cluster.kubeconfig get nodes
 # always the the cluster object for proper cleanup
 kubectl delete cluster capi-tenant-cluster
 ```
+
+## Pulumi Demo
 
 
 ## Maintainer
