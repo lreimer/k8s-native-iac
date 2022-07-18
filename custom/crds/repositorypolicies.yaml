@@ -1,0 +1,62 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: repositorypolicies.ecr.aws.cloud.qaware.de
+spec:
+  group: ecr.aws.cloud.qaware.de
+  names:
+    kind: RepositoryPolicy
+    listKind: RepositoryPolicyList
+    plural: repositorypolicies
+    singular: repositorypolicy
+  scope: Namespaced
+  versions:
+  - name: v1beta1
+    schema:
+      openAPIV3Schema:
+        description: RepositoryPolicy is the Schema for the repositorypolicies API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: RepositoryPolicySpec defines the desired state of RepositoryPolicy
+            properties:
+              force:
+                default: false
+                description: (Optional) Whether to force the policy creation. Caution,
+                  this might prevent further changed to the repository.
+                type: boolean
+              policyText:
+                description: The RepositoryPolicy JSON text. This member is required.
+                type: string
+              repositoryName:
+                description: The name of the repository to receive the policy.
+                type: string
+            required:
+            - policyText
+            - repositoryName
+            type: object
+          status:
+            description: RepositoryPolicyStatus defines the observed state of RepositoryPolicy
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []

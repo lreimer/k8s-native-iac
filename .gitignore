@@ -1,5 +1,6 @@
 .dccache
 *.xpkg
+*.kubeconfig
 
 # Logs
 logs

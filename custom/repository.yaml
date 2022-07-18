@@ -1,0 +1,12 @@
+apiVersion: ecr.aws.cloud.qaware.de/v1beta1
+kind: Repository
+metadata:
+  name: repository-sample
+  labels:
+    app: sample-microservice
+spec:
+  imageTagMutability: IMMUTABLE
+  imageScanningConfiguration:
+    scanOnPush: true
+  encryptionConfiguration:
+    encryptionType: AES256

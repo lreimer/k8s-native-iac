@@ -1,0 +1,22 @@
+apiVersion: ecr.aws.cloud.qaware.de/v1beta1
+kind: RepositoryPolicy
+metadata:
+  name: repository-sample-policy
+spec:
+  repositoryName: repository-sample
+  policyText: |-
+    {
+        "Version": "2012-10-17",
+        "Statement": [
+            {
+                "Sid": "AllowAll",
+                "Effect": "Allow",
+                "Principal": {
+                    "AWS": "arn:aws:iam::450802564356:user/mario-leander.reimer"
+                },
+                "Action": [
+                    "ecr:*"
+                ]
+            }
+        ]
+    }

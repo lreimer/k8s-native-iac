@@ -1,0 +1,104 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: repositories.ecr.aws.cloud.qaware.de
+spec:
+  group: ecr.aws.cloud.qaware.de
+  names:
+    kind: Repository
+    listKind: RepositoryList
+    plural: repositories
+    singular: repository
+  scope: Namespaced
+  versions:
+  - name: v1beta1
+    schema:
+      openAPIV3Schema:
+        description: Repository is the Schema for the repositories API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: RepositorySpec defines the desired state of Repository
+            properties:
+              encryptionConfiguration:
+                description: (Optional) The EncryptionConfiguration for the repository.
+                nullable: true
+                properties:
+                  encryptionType:
+                    default: AES256
+                    description: This member is required.
+                    enum:
+                    - AES256
+                    - KMS
+                    type: string
+                  kmsKey:
+                    description: If you use the KMS encryption type, specify the CMK
+                      to use for encryption. The alias, key ID, or full ARN of the
+                      CMK can be specified. The key must exist in the same Region
+                      as the repository. If no key is specified, the default AWS managed
+                      CMK for Amazon ECR will be used.
+                    type: string
+                required:
+                - encryptionType
+                type: object
+              imageScanningConfiguration:
+                description: (Optional) The ImageScanningConfiguration for the repository.
+                nullable: true
+                properties:
+                  scanOnPush:
+                    default: true
+                    description: Determines whether images are scanned after being
+                      pushed
+                    type: boolean
+                required:
+                - scanOnPush
+                type: object
+              imageTagMutability:
+                default: IMMUTABLE
+                description: (Optional) The tag mutability setting for the repository.
+                enum:
+                - MUTABLE
+                - IMMUTABLE
+                type: string
+            required:
+            - imageTagMutability
+            type: object
+          status:
+            description: RepositoryStatus defines the observed state of Repository
+            properties:
+              registryArn:
+                description: Full ARN of the repository
+                type: string
+              registryId:
+                description: The registry ID where the repository was created
+                type: string
+              repositoryUri:
+                description: The URI of the repository (in the form aws_account_id.dkr.ecr.region.amazonaws.com/repositoryName)
+                type: string
+            required:
+            - registryArn
+            - registryId
+            - repositoryUri
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []

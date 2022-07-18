@@ -26,6 +26,19 @@ make destroy-clusters
 
 ## Custom Demo
 
+A custom AWS ECR operator can be built easily using the Operator SDK.
+
+```bash
+# checkout the following Git repository
+git clone https://github.com/lreimer/aws-ecr-operator
+cd aws-ecr-operator
+make docker-build
+make deploy
+
+# try to create an ECR and do cleanup afterwards
+$ kubectl apply -k config/samples
+$ kubectl delete -k config/samples
+```
 
 ## Crossplane Demo
 
@@ -173,6 +186,49 @@ kubectl apply -f ack/rds/db-instance.yaml
 
 
 ## CAPI Demo
+
+
+
+```bash
+# see https://cluster-api-aws.sigs.k8s.io/getting-started.html
+
+# Make sure to export AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY
+export AWS_REGION=$(AWS_REGION)
+
+# needs to be done once to setup cloudformation stack and permissions
+clusterawsadm bootstrap iam create-cloudformation-stack --config bootstrap-config.yaml
+
+# You may need to set a personal GITHUB_TOKEN to avoid API rate limiting
+export AWS_SSH_KEY_NAME=capi-default
+export AWS_CONTROL_PLANE_MACHINE_TYPE=t3.medium
+export AWS_NODE_MACHINE_TYPE=t3.medium
+export AWS_B64ENCODED_CREDENTIALS=$(shell clusterawsadm bootstrap credentials encode-as-profile)
+
+clusterctl init --infrastructure aws
+
+clusterctl generate cluster  --kubernetes-version v1.22.0 \
+    --kubernetes-version v1.22.0 \
+    --control-plane-machine-count=3 \
+    --worker-machine-count=3 \
+    > cluster-api/capi-demo.yaml
+
+# apply the tenant cluster resources to the management cluster
+kubectl apply -f cluster-api/capi-tenant-cluster.yaml
+kubectl get cluster
+clusterctl describe cluster capi-tenant-cluster
+
+# wait for the control plane to be Initialized
+kubectl get kubeadmcontrolplane
+clusterctl get kubeconfig capi-tenant-cluster > cluster-api/capi-tenant-cluster.kubeconfig
+
+# install CNI plugin for CAPI tenant cluster
+kubectl --kubeconfig=cluster-api/capi-tenant-cluster.kubeconfig \
+    apply -f https://docs.projectcalico.org/v3.21/manifests/calico.yaml
+kubectl --kubeconfig=cluster-api/capi-tenant-cluster.kubeconfig get nodes
+
+# always the the cluster object for proper cleanup
+kubectl delete cluster capi-tenant-cluster
+```
 
 
 ## Maintainer

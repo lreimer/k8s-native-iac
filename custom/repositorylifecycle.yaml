@@ -1,0 +1,24 @@
+apiVersion: ecr.aws.cloud.qaware.de/v1beta1
+kind: RepositoryLifecycle
+metadata:
+  name: repository-sample-lifecycle
+spec:
+  repositoryName: repository-sample
+  lifecyclePolicyText: |-
+    {
+      "rules": [
+          {
+              "rulePriority": 1,
+              "description": "Expire images older than 14 days",
+              "selection": {
+                  "tagStatus": "untagged",
+                  "countType": "sinceImagePushed",
+                  "countUnit": "days",
+                  "countNumber": 14
+              },
+              "action": {
+                  "type": "expire"
+              }
+          }
+      ]
+    }
