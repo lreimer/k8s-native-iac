@@ -9,8 +9,8 @@ spec:
       secret:
         name: pulumi-api-secret
         key: accessToken
-  stack: lreimer/pulumi-demo-ts/dev
+  stack: lreimer/pulumi-demo-ts/k8s
   projectRepo: https://github.com/lreimer/k8s-experts-day
-  repoDir: pulumi-demo-ts
+  repoDir: pulumi-demo-ts/
   branch: "refs/heads/master"
   destroyOnFinalize: true
