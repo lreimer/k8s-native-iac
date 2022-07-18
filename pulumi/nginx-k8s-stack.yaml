@@ -1,7 +1,8 @@
 apiVersion: pulumi.com/v1
 kind: Stack
 metadata:
-  name: pulumi-demo-ts
+  name: k8s-nginx
+  namespace: pulumi-system
 spec:
   envRefs:
     PULUMI_ACCESS_TOKEN:
@@ -9,8 +10,8 @@ spec:
       secret:
         name: pulumi-api-secret
         key: accessToken
-  stack: lreimer/pulumi-demo-ts/k8s
-  projectRepo: https://github.com/lreimer/k8s-experts-day
-  repoDir: pulumi-demo-ts/
+  stack: lreimer/k8s-nginx/dev
+  projectRepo: https://github.com/pulumi/examples
+  repoDir: kubernetes-ts-nginx/
   branch: "refs/heads/master"
   destroyOnFinalize: true

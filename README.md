@@ -232,8 +232,10 @@ kubectl delete cluster capi-tenant-cluster
 ```bash
 kubectl create secret generic pulumi-api-secret -n pulumi-system --from-literal=accessToken=pul-4711abcExampleToken
 
+kubectl apply -f pulumi/nginx-k8s-stack.yaml
+kubectl get all -n pulumi-system
+kubectl delete -f pulumi/nginx-k8s-stack.yaml
 ```
-
 
 ## Maintainer
 
