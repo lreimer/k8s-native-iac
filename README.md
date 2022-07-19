@@ -36,8 +36,11 @@ make docker-build
 make deploy
 
 # try to create an ECR and do cleanup afterwards
-$ kubectl apply -k config/samples
-$ kubectl delete -k config/samples
+kubectl apply -k config/samples
+kubectl delete -k config/samples
+
+# or locally
+kubectl apply -f custom/repository.yaml
 ```
 
 ## ACK Demo
