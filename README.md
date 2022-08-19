@@ -202,7 +202,7 @@ clusterawsadm bootstrap iam create-cloudformation-stack --config bootstrap-confi
 export AWS_SSH_KEY_NAME=capi-default
 export AWS_CONTROL_PLANE_MACHINE_TYPE=t3.medium
 export AWS_NODE_MACHINE_TYPE=t3.medium
-export AWS_B64ENCODED_CREDENTIALS=$(shell clusterawsadm bootstrap credentials encode-as-profile)
+export AWS_B64ENCODED_CREDENTIALS=$(clusterawsadm bootstrap credentials encode-as-profile)
 
 clusterctl init --infrastructure aws
 
