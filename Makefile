@@ -1,6 +1,9 @@
 AWS_ACCOUNT_ID := $(shell aws sts get-caller-identity --query Account --output text)
 AWS_REGION ?= eu-central-1
 GITHUB_USER ?= lreimer
+GCP_PROJECT ?= cloud-native-experience-lab
+GCP_REGION ?= europe-west1
+GCP_ZONE ?= europe-west1-b
 
 create-eks-cluster:
 	@eksctl create cluster -f eks-cluster.yaml
@@ -20,7 +23,16 @@ prepare-gke-cluster:
 	@gcloud config set container/use_client_certificate False
 
 create-gke-cluster:
-	@gcloud container clusters create gke-k8s-iac-cluster --num-nodes=3 --enable-autoscaling --min-nodes=3 --max-nodes=5 --cluster-version=1.21
+	@gcloud container clusters create gke-k8s-iac-cluster  \
+		--addons HttpLoadBalancing,HorizontalPodAutoscaling,ConfigConnector \
+		--workload-pool=$(GCP_PROJECT).svc.id.goog \
+		--enable-autoscaling \
+		--num-nodes=5 \
+		--min-nodes=3 --max-nodes=10 \
+		--machine-type=e2-medium \
+		--logging=SYSTEM \
+    	--monitoring=SYSTEM \
+		--cluster-version=1.22
 	@kubectl create clusterrolebinding cluster-admin-binding --clusterrole=cluster-admin --user=$$(gcloud config get-value core/account)
 	@kubectl cluster-info
 
