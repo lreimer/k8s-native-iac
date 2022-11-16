@@ -1,0 +1,21 @@
+apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
+kind: PubSubTopic
+metadata:
+  labels:
+    a-label: "a-value"
+  name: pubsubtopic-sample
+spec:
+  schemaSettings:
+    schemaRef:
+      name: pubsubtopic-dep
+    encoding: JSON
+---
+apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
+kind: PubSubSchema
+metadata:
+  name: pubsubtopic-dep
+spec:
+  type: PROTOCOL_BUFFER
+  definition: "syntax = \"proto3\";\nmessage Results {\nstring message_request = 1;\nstring message_response = 2;\nstring timestamp_request = 3;\nstring timestamp_response = 4;\n}"
+  projectRef:
+    external: cloud-native-experience-lab
