@@ -3,6 +3,7 @@ kind: StorageBucket
 metadata:
   # StorageBucket names must be globally unique
   name: cloud-native-experience-lab-demo
+  namespace: config-connector
   annotations:
     cnrm.cloud.google.com/force-destroy: "false"
   labels:

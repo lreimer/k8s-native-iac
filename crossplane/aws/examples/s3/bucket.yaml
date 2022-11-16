@@ -1,9 +1,9 @@
 apiVersion: s3.aws.crossplane.io/v1beta1
 kind: Bucket
 metadata:
-  name: mastering-gitops
+  name: container-conf-2022
   annotations:
-    crossplane.io/external-name: mastering-gitops-eu-central-1
+    crossplane.io/external-name: container-conf-2022-eu-central-1
   labels:
     region: eu-central-1
 spec:

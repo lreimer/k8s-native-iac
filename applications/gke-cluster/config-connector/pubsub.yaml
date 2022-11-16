@@ -4,6 +4,7 @@ metadata:
   labels:
     a-label: "a-value"
   name: pubsubtopic-sample
+  namespace: config-connector
 spec:
   schemaSettings:
     schemaRef:

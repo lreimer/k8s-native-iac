@@ -4,6 +4,7 @@ metadata:
   labels:
     a-label: "a-value"
   name: sqldatabase-sample
+  namespace: config-connector
 spec:
   charset: utf8mb4
   collation: utf8mb4_bin
