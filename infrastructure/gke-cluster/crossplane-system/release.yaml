@@ -10,7 +10,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: crossplane-stable
-      version: "1.9.0"
+      version: "1.10.1"
   interval: 1h0m0s
   releaseName: crossplane-system
   targetNamespace: crossplane-system
