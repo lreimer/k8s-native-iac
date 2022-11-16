@@ -53,6 +53,8 @@ export AWS_REGION=eu-central-1
 export AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query "Account" --output text)
 export OIDC_PROVIDER=$(aws eks describe-cluster --name eks-k8s-iac-cluster --region $AWS_REGION --query "cluster.identity.oidc.issuer" --output text | sed -e "s/^https:\/\///")
 
+cd applications/eks-cluster/
+
 # we need to login to the public chart ECR
 aws ecr-public get-login-password --region $AWS_REGION | helm registry login --username AWS --password-stdin public.ecr.aws
 
