@@ -1,11 +1,11 @@
 apiVersion: s3.services.k8s.aws/v1alpha1
 kind: Bucket
 metadata:
-  name: ack-demo-bucket
+  name: ack-demo-bucket-cc2022
   annotations:
     services.k8s.aws/region: eu-central-1
 spec:
-  name: ack-demo-bucket
+  name: ack-demo-bucket-cc2022
   encryption:
     rules:
     - applyServerSideEncryptionByDefault:
@@ -13,4 +13,4 @@ spec:
   tagging:
     tagSet:
     - key: Conference
-      value: Mastering Kubernetes
+      value: ContainerConf 2022
