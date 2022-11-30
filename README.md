@@ -43,6 +43,31 @@ kubectl delete -k config/samples
 kubectl apply -f custom/repository.yaml
 ```
 
+## ConfigConnector Demo
+
+The ConfigConnector add-on from GKE allows the declarative management of other GCP cloud resources such as SQL instances or storage bucket. However, after the installation it needs to be configured for it to work correctly.
+
+```yaml
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: config-connector
+  annotations:
+    # required to configure Config Connector with Google Cloud ProjectID
+    cnrm.cloud.google.com/project-id: cloud-native-experience-lab
+---
+apiVersion: core.cnrm.cloud.google.com/v1beta1
+kind: ConfigConnector
+metadata:
+  # the name is restricted to ensure that there is only one
+  # ConfigConnector resource installed in your cluster
+  name: configconnector.core.cnrm.cloud.google.com
+  namespace: cnrm-system
+spec:
+ mode: cluster
+ googleServiceAccount: "cloud-native-explab@cloud-native-experience-lab.iam.gserviceaccount.com"
+```
+
 ## ACK Demo
 
 The Amazon controllers for Kubernetes are a lightweight AWS only option to provision cloud infrastructure the K8s-native way.
