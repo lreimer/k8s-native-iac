@@ -4,7 +4,7 @@ kind: ClusterConfig
 metadata:
   name: eks-k8s-iac-cluster
   region: eu-central-1
-  version: '1.21'
+  version: '1.23'
 
 iam:
   withOIDC: true
@@ -28,8 +28,8 @@ managedNodeGroups:
   - name: k8s-iac-cluster-ng-1
     instanceType: t3.medium
     minSize: 3
-    maxSize: 5
-    desiredCapacity: 3
+    maxSize: 10
+    desiredCapacity: 5
     volumeSize: 20
     ssh:
       allow: false
