@@ -237,11 +237,11 @@ export AWS_B64ENCODED_CREDENTIALS=$(clusterawsadm bootstrap credentials encode-a
 
 clusterctl init --infrastructure aws
 
-clusterctl generate cluster  --kubernetes-version v1.22.0 \
+clusterctl generate cluster capi-tenant-cluster --kubernetes-version v1.22.0 \
     --kubernetes-version v1.22.0 \
     --control-plane-machine-count=3 \
     --worker-machine-count=3 \
-    > cluster-api/capi-demo.yaml
+    > cluster-api/capi-tenant-cluster.yaml
 
 # apply the tenant cluster resources to the management cluster
 kubectl apply -f cluster-api/capi-tenant-cluster.yaml
