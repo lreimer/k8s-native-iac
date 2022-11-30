@@ -24,7 +24,7 @@ make bootstrap-eks-flux2
 make destroy-clusters
 ```
 
-## Custom Demo
+## Custom Operator Demo
 
 A custom AWS ECR operator can be built easily using the Operator SDK.
 
@@ -43,7 +43,7 @@ kubectl delete -k config/samples
 kubectl apply -f custom/repository.yaml
 ```
 
-## ConfigConnector Demo
+## Google ConfigConnector Demo
 
 The ConfigConnector add-on from GKE allows the declarative management of other GCP cloud resources such as SQL instances or storage bucket. However, after the installation it needs to be configured for it to work correctly.
 
@@ -68,7 +68,7 @@ spec:
  googleServiceAccount: "cloud-native-explab@cloud-native-experience-lab.iam.gserviceaccount.com"
 ```
 
-## ACK Demo
+## AWS Controllers for Kubernetes (ACK) Demo
 
 The Amazon controllers for Kubernetes are a lightweight AWS only option to provision cloud infrastructure the K8s-native way.
 
@@ -157,6 +157,10 @@ kubectl create secret generic mydb-instance-creds --from-literal=password=topsec
 kubectl apply -f ack/rds/db-subnet-group.yaml
 kubectl apply -f ack/rds/db-instance.yaml
 ```
+
+## Azure Service Operator (for Kubernetes)
+
+see https://github.com/Azure/azure-service-operator
 
 ## Crossplane Demo
 
