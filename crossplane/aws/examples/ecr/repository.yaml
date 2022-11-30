@@ -1,7 +1,7 @@
 apiVersion: ecr.aws.crossplane.io/v1beta1
 kind: Repository
 metadata:
-  name: mastering-kubernetes
+  name: cnn-mainz-2022
   labels:
     region: eu-central-1
 spec:
