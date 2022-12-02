@@ -68,6 +68,14 @@ spec:
  googleServiceAccount: "cloud-native-explab@cloud-native-experience-lab.iam.gserviceaccount.com"
 ```
 
+```bash
+cd applications/gke-cluster/
+kubectl apply -f config-connector/storagebucket.yaml
+
+gcloud alpha storage ls
+open https://console.cloud.google.com/storage/browser?project=cloud-native-experience-lab
+```
+
 ## AWS Controllers for Kubernetes (ACK) Demo
 
 The Amazon controllers for Kubernetes are a lightweight AWS only option to provision cloud infrastructure the K8s-native way.
