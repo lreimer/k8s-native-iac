@@ -4,7 +4,7 @@ kind: ClusterConfig
 metadata:
   name: eks-k8s-iac-cluster
   region: eu-central-1
-  version: '1.23'
+  version: '1.24'
 
 iam:
   withOIDC: true
