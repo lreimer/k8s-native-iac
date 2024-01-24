@@ -1,4 +1,4 @@
-# K8s-native Infrastructure-as-code
+# kubectl apply -f cloud-infrastructure.yaml with Crossplane et al.
 
 Demo repository for Kubernetes-native infrastructure as code showcases, including Pulumi Operator, Crossplane, AWS Controllers for Kubernetes (ACK) and Cluster API.
 
