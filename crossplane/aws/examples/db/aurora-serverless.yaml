@@ -1,8 +1,10 @@
 ---
-apiVersion: rds.aws.crossplane.io/v1alpha1
-kind: DBCluster
+apiVersion: rds.aws.upbound.io/v1beta1
+kind: Cluster
 metadata:
-  name: test-aurora-serverless
+  name: example-aurora-serverless
+  labels:
+    app.kubernetes.io/name: example
 spec:
   deletionPolicy: Delete
   forProvider:
@@ -19,11 +21,6 @@ spec:
     engine: aurora-postgresql
     engineMode: serverless
     engineVersion: "10.14"
-    scalingConfiguration:
-      autoPause: true
-      secondsUntilAutoPause: 300
-      minCapacity: 2
-      maxCapacity: 32
     storageEncrypted: true
     skipFinalSnapshot: true
     enableHTTPEndpoint: true
@@ -36,4 +33,4 @@ spec:
     name: test-aurora-serverless
     namespace: default
   providerConfigRef:
-    name: providerconfig-aws
+    name: default
