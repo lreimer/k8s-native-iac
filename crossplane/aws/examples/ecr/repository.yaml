@@ -1,16 +1,18 @@
-apiVersion: ecr.aws.crossplane.io/v1beta1
+apiVersion: ecr.aws.upbound.io/v1beta1
 kind: Repository
 metadata:
-  name: cnn-mainz-2022
+  name: example-repository
   labels:
-    region: eu-central-1
+    app.kubernetes.io/name: example
 spec:
   deletionPolicy: Delete
   forProvider:
     forceDelete: true
     region: eu-central-1
+    encryptionConfiguration:
+      - encryptionType: AES256
     imageScanningConfiguration:
-      scanOnPush: true
+      - scanOnPush: true
     imageTagMutability: IMMUTABLE
   providerConfigRef:
-    name: providerconfig-aws
+    name: default
