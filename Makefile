@@ -28,11 +28,12 @@ create-gke-cluster:
 		--workload-pool=$(GCP_PROJECT).svc.id.goog \
 		--enable-autoscaling \
 		--num-nodes=5 \
-		--min-nodes=3 --max-nodes=10 \
+		--min-nodes=5 --max-nodes=10 \
 		--machine-type=e2-medium \
 		--logging=SYSTEM \
     	--monitoring=SYSTEM \
-		--cluster-version=1.24
+		--release-channel=regular \
+		--cluster-version=1.27
 	@kubectl create clusterrolebinding cluster-admin-binding --clusterrole=cluster-admin --user=$$(gcloud config get-value core/account)
 	@kubectl cluster-info
 
