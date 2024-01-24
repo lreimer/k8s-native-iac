@@ -1,5 +1,5 @@
 AWS_ACCOUNT_ID := $(shell aws sts get-caller-identity --query Account --output text)
-AWS_REGION ?= eu-central-1
+AWS_REGION ?= eu-north-1
 GITHUB_USER ?= lreimer
 GCP_PROJECT ?= cloud-native-experience-lab
 GCP_REGION ?= europe-north1
@@ -66,11 +66,11 @@ install-capi-aws:
 	@export AWS_B64ENCODED_CREDENTIALS=$(shell clusterawsadm bootstrap credentials encode-as-profile)
 	@clusterctl init --infrastructure aws
 
-
 delete-clusters: delete-eks-cluster delete-gke-cluster
 
 delete-eks-cluster:
-	@eksctl delete cluster -f eks-cluster.yaml
+	@eksctl delete cluster --region=eu-north-1 --name=eks-k8s-iac-cluster
+	@aws cloudformation delete-stack --region eu-north-1 --stack-name eksctl-eks-k8s-iac-cluster-cluster
 
 delete-gke-cluster:
 	@gcloud container clusters delete gke-k8s-iac-cluster --region=$(GCP_REGION) --async --quiet
