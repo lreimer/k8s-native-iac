@@ -69,10 +69,12 @@ spec:
 ```
 
 ```bash
+kubectl annotate namespace default cnrm.cloud.google.com/project-id="cloud-native-experience-lab"
+
 cd applications/gke-cluster/
 kubectl apply -f config-connector/storagebucket.yaml
 
-gcloud alpha storage ls
+gcloud storage buckets list
 open https://console.cloud.google.com/storage/browser?project=cloud-native-experience-lab
 ```
 
