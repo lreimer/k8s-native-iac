@@ -2,8 +2,8 @@ AWS_ACCOUNT_ID := $(shell aws sts get-caller-identity --query Account --output t
 AWS_REGION ?= eu-central-1
 GITHUB_USER ?= lreimer
 GCP_PROJECT ?= cloud-native-experience-lab
-GCP_REGION ?= europe-west1
-GCP_ZONE ?= europe-west1-b
+GCP_REGION ?= europe-north1
+GCP_ZONE ?= europe-north1-b
 
 create-eks-cluster:
 	@eksctl create cluster -f eks-cluster.yaml
@@ -27,12 +27,14 @@ create-gke-cluster:
 		--addons HttpLoadBalancing,HorizontalPodAutoscaling,ConfigConnector \
 		--workload-pool=$(GCP_PROJECT).svc.id.goog \
 		--enable-autoscaling \
-		--num-nodes=5 \
-		--min-nodes=5 --max-nodes=10 \
-		--machine-type=e2-medium \
+		--autoscaling-profile=optimize-utilization \
+		--num-nodes=2 \
+		--min-nodes=2 --max-nodes=5 \
+		--machine-type=e2-standard-2 \
 		--logging=SYSTEM \
     	--monitoring=SYSTEM \
-		--release-channel=regular \
+		--region=$(GCP_REGION) \
+		--release-channel=stable \
 		--cluster-version=1.27
 	@kubectl create clusterrolebinding cluster-admin-binding --clusterrole=cluster-admin --user=$$(gcloud config get-value core/account)
 	@kubectl cluster-info
@@ -71,4 +73,4 @@ delete-eks-cluster:
 	@eksctl delete cluster -f eks-cluster.yaml
 
 delete-gke-cluster:
-	@gcloud container clusters delete gke-k8s-iac-cluster --async --quiet
+	@gcloud container clusters delete gke-k8s-iac-cluster --region=$(GCP_REGION) --async --quiet
