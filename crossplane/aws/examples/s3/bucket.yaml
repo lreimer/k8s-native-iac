@@ -1,19 +1,17 @@
-apiVersion: s3.aws.crossplane.io/v1beta1
+apiVersion: s3.aws.upbound.io/v1beta1
 kind: Bucket
 metadata:
-  name: cnn-mainz-2022
-  annotations:
-    crossplane.io/external-name: cnn-mainz-2022-eu-central-1
+  # name must be unique across all of your buckets in AWS, append a hash to the name
+  generateName: example-bucket-
   labels:
-    region: eu-central-1
+    app.kubernetes.io/name: example
 spec:
+  # determine wether to Delete or Orphan the resource on deletion
   deletionPolicy: Delete
   forProvider:
-    acl: private
-    locationConstraint: eu-central-1
-    serverSideEncryptionConfiguration:
-      rules:
-        - applyServerSideEncryptionByDefault:
-            sseAlgorithm: AES256
+    region: eu-central-1
+    objectLockEnabled: true
+    tags:
+      Name: ExampleBucket
   providerConfigRef:
-    name: providerconfig-aws
+    name: default

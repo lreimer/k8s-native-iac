@@ -184,19 +184,22 @@ For AWS the configuration needs to reference the required credentials in the for
 These are basically the `aws_access_key_id` and `aws_secret_access_key` from the default profile found in the `${HOME}/.aws/credentials` file. With this information we can create a secret and reference it from a provider config resource.
 
 ```bash
-kubectl create secret generic aws-credentials -n crossplane-system --from-file=credentials=${HOME}/.aws/credentials
+kubectl create secret generic aws-secret -n crossplane-system --from-file=credentials=${HOME}/.aws/credentials
 
-# we could manually install the AWS provider
-# kubectl crossplane install provider crossplane/provider-aws:v0.29.0
-
+# install individual crossplance providers and provider config
 cd crossplane/aws/
-kubectl apply -n crossplane-system -f provider.yaml
-kubectl apply -n crossplane-system -f providerconfig.yaml
+kubectl apply -n crossplane-system -f provider-aws-xyz.yaml
+kubectl apply -n crossplane-system -f providerconfig-aws-xyz.yaml
+kubectl get -n crossplane-system providers.pkg.crossplane.io
+
+# you could also install the community-contrib provider
+# Caution: this one brings CRDs for all AWS services!
+kubectl apply -n crossplane-system -f provider-aws.yaml
 
 cd crossplane/aws/examples/
 
 # create an S3 bucket in eu-central-1
-kubectl apply -f s3/bucket.yaml
+kubectl create -f s3/bucket.yaml
 aws s3 ls
 
 # create an ECR in eu-central-1

@@ -1,0 +1,17 @@
+apiVersion: s3.aws.upbound.io/v1beta1
+kind: BucketLifecycleConfiguration
+metadata:
+  name: example-bucket-blc
+spec:
+  forProvider:
+    region: eu-central-1
+    bucketSelector:
+      matchLabels:
+        app.kubernetes.io/name: example
+    rule:
+      - expiration:
+          - days: 90
+        filter:
+          - prefix: tmp/
+        id: rule-1
+        status: Enabled

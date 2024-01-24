@@ -1,11 +1,12 @@
-apiVersion: aws.crossplane.io/v1beta1
+apiVersion: aws.upbound.io/v1beta1
 kind: ProviderConfig
 metadata:
-  name: providerconfig-aws
+  name: default
+  namespace: crossplane-system
 spec:
   credentials:
     source: Secret
     secretRef:
       namespace: crossplane-system
-      name: aws-credentials
+      name: aws-secret
       key: credentials

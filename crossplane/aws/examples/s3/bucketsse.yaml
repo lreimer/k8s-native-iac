@@ -1,0 +1,13 @@
+apiVersion: s3.aws.upbound.io/v1beta1
+kind: BucketServerSideEncryptionConfiguration
+metadata:
+  name: example-sse
+spec:
+  forProvider:
+    region: eu-central-1
+    bucketSelector:
+      matchLabels:
+        app.kubernetes.io/name: example
+    rule:
+      - applyServerSideEncryptionByDefault:
+          - sseAlgorithm: AES256
