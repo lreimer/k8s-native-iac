@@ -3,7 +3,7 @@ kind: DBInstance
 metadata:
   name: mydb-instance
   annotations:
-    services.k8s.aws/region: eu-central-1
+    services.k8s.aws/region: eu-north-1
 spec:
   allocatedStorage: 5
   dbInstanceClass: db.t3.micro

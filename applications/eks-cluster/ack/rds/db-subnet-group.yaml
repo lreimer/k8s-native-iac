@@ -3,12 +3,13 @@ kind: DBSubnetGroup
 metadata:
  name: mydb-subnet-group
  annotations:
-    services.k8s.aws/region: eu-central-1
+    services.k8s.aws/region: eu-north-1
 spec:
  name: mydb-subnet-group
  description: mydb-subnet-group
  subnetIDs:
- - subnet-0c797e2fbcac1d361	
- - subnet-0890caf220836b048	
- - subnet-03fbd01d42a2303a3
+ # change these to the private subnets in your VPC and region
+ - subnet-0e8941014adec8fb5
+ - subnet-04dc935bbc7003fac
+ - subnet-06b0bcb52c7a79fe5
  tags: []

@@ -1,11 +1,11 @@
 apiVersion: s3.services.k8s.aws/v1alpha1
 kind: Bucket
 metadata:
-  name: ack-demo-bucket-cnn2022
+  name: ack-demo-bucket
   annotations:
-    services.k8s.aws/region: eu-central-1
+    services.k8s.aws/region: eu-north-1
 spec:
-  name: ack-demo-bucket-cnn2022
+  name: ack-demo-bucket
   encryption:
     rules:
     - applyServerSideEncryptionByDefault:
@@ -13,4 +13,4 @@ spec:
   tagging:
     tagSet:
     - key: Meetup
-      value: Cloud-native Night Mainz
+      value: Platform Engineering Meetup

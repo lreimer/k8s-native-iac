@@ -90,7 +90,7 @@ The Amazon controllers for Kubernetes are a lightweight AWS only option to provi
 
 ```bash
 export ACK_SYSTEM_NAMESPACE=ack-system
-export AWS_REGION=eu-central-1
+export AWS_REGION=eu-north-1
 export AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query "Account" --output text)
 export OIDC_PROVIDER=$(aws eks describe-cluster --name eks-k8s-iac-cluster --region $AWS_REGION --query "cluster.identity.oidc.issuer" --output text | sed -e "s/^https:\/\///")
 
@@ -101,19 +101,20 @@ aws ecr-public get-login-password --region $AWS_REGION | helm registry login --u
 
 # install the S3 controller
 helm install -n $ACK_SYSTEM_NAMESPACE ack-s3-controller \
-    oci://public.ecr.aws/aws-controllers-k8s/s3-chart --version=v0.1.3 --set=aws.region=$AWS_REGION
+    oci://public.ecr.aws/aws-controllers-k8s/s3-chart --version=1.0.7 --set=aws.region=$AWS_REGION
+kubectl get all -n ack-system
 
 # setup IAM permissions and IRSA
 envsubst < ack/s3/ack-s3-controller-trust.tpl > ack/s3/ack-s3-controller-trust.json
 aws iam create-role \
-    --role-name ack-s3-controller \
+    --role-name ack-s3-controller-k8s-iac-cluster-eu-north-1 \
     --assume-role-policy-document file://ack/s3/ack-s3-controller-trust.json \
     --description "IRSA role for ACK S3 controller"
 aws iam attach-role-policy \
-    --role-name ack-s3-controller \
+    --role-name ack-s3-controller-k8s-iac-cluster-eu-north-1 \
     --policy-arn arn:aws:iam::aws:policy/AmazonS3FullAccess
 
-export ACK_CONTROLLER_IAM_ROLE_ARN=$(aws iam get-role --role-name=ack-s3-controller --query Role.Arn --output text)
+export ACK_CONTROLLER_IAM_ROLE_ARN=$(aws iam get-role --role-name=ack-s3-controller-k8s-iac-cluster-eu-north-1 --query Role.Arn --output text)
 export IRSA_ROLE_ARN=eks.amazonaws.com/role-arn=$ACK_CONTROLLER_IAM_ROLE_ARN
 kubectl annotate serviceaccount -n ack-system ack-s3-controller $IRSA_ROLE_ARN
 kubectl -n ack-system rollout restart deployment ack-s3-controller-s3-chart
@@ -127,18 +128,19 @@ aws s3 ls
 
 # install the ECR controller
 helm install -n $ACK_SYSTEM_NAMESPACE ack-ecr-controller \
-    oci://public.ecr.aws/aws-controllers-k8s/ecr-chart --version=v0.1.4 --set=aws.region=$AWS_REGION
+    oci://public.ecr.aws/aws-controllers-k8s/ecr-chart --version=1.0.10 --set=aws.region=$AWS_REGION
+kubectl get all -n ack-system
 
 envsubst < ack/ecr/ack-ecr-controller-trust.tpl > ack/ecr/ack-ecr-controller-trust.json
 aws iam create-role \
-    --role-name ack-ecr-controller \
+    --role-name ack-ecr-controller-k8s-iac-cluster-eu-north-1 \
     --assume-role-policy-document file://ack/ecr/ack-ecr-controller-trust.json \
     --description "IRSA role for ACK ECR controller"
 aws iam attach-role-policy \
-    --role-name ack-ecr-controller \
+    --role-name ack-ecr-controller-k8s-iac-cluster-eu-north-1 \
     --policy-arn arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryFullAccess
 
-export ACK_CONTROLLER_IAM_ROLE_ARN=$(aws iam get-role --role-name=ack-ecr-controller --query Role.Arn --output text)
+export ACK_CONTROLLER_IAM_ROLE_ARN=$(aws iam get-role --role-name=ack-ecr-controller-k8s-iac-cluster-eu-north-1 --query Role.Arn --output text)
 export IRSA_ROLE_ARN=eks.amazonaws.com/role-arn=$ACK_CONTROLLER_IAM_ROLE_ARN
 kubectl annotate serviceaccount -n ack-system ack-ecr-controller $IRSA_ROLE_ARN
 kubectl -n ack-system rollout restart deployment ack-ecr-controller-ecr-chart
@@ -151,18 +153,19 @@ kubectl delete -f ack/ecr/repository.yaml
 
 # install the RDS controller
 helm install -n $ACK_SYSTEM_NAMESPACE ack-rds-controller \
-    oci://public.ecr.aws/aws-controllers-k8s/rds-chart --version=v0.0.28 --set=aws.region=$AWS_REGION
+    oci://public.ecr.aws/aws-controllers-k8s/rds-chart --version=1.1.9 --set=aws.region=$AWS_REGION
+kubectl get all -n ack-system
 
 envsubst < ack/rds/ack-rds-controller-trust.tpl > ack/rds/ack-rds-controller-trust.json
 aws iam create-role \
-    --role-name ack-rds-controller \
+    --role-name ack-rds-controller-k8s-iac-cluster-eu-north-1 \
     --assume-role-policy-document file://ack/rds/ack-rds-controller-trust.json \
     --description "IRSA role for ACK RDS controller"
 aws iam attach-role-policy \
-    --role-name ack-rds-controller \
+    --role-name ack-rds-controller-k8s-iac-cluster-eu-north-1 \
     --policy-arn arn:aws:iam::aws:policy/AmazonRDSFullAccess
 
-export ACK_CONTROLLER_IAM_ROLE_ARN=$(aws iam get-role --role-name=ack-rds-controller --query Role.Arn --output text)
+export ACK_CONTROLLER_IAM_ROLE_ARN=$(aws iam get-role --role-name=ack-rds-controller-k8s-iac-cluster-eu-north-1 --query Role.Arn --output text)
 export IRSA_ROLE_ARN=eks.amazonaws.com/role-arn=$ACK_CONTROLLER_IAM_ROLE_ARN
 kubectl annotate serviceaccount -n ack-system ack-rds-controller $IRSA_ROLE_ARN
 kubectl -n ack-system rollout restart deployment ack-rds-controller-rds-chart
