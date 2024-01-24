@@ -1,7 +1,7 @@
 apiVersion: s3.aws.upbound.io/v1beta1
 kind: BucketLifecycleConfiguration
 metadata:
-  name: example-bucket-blc
+  name: example-bucket-lifecycle
 spec:
   forProvider:
     region: eu-central-1

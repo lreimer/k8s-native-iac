@@ -3,9 +3,6 @@ apiVersion: apiextensions.crossplane.io/v1
 kind: Composition
 metadata:
   name: xbuckets.s3.aws.qaware.de
-  labels:
-    provider: aws
-    service: s3
 spec:
   compositeTypeRef:
     apiVersion: s3.aws.qaware.de/v1beta1
@@ -13,22 +10,77 @@ spec:
   resources:
     - name: bucket
       base:
-        apiVersion: s3.aws.crossplane.io/v1beta1
+        apiVersion: s3.aws.upbound.io/v1beta1
         kind: Bucket
         spec:
           deletionPolicy: Delete          
           forProvider:
-            acl: private
-            serverSideEncryptionConfiguration:
-              rules:
-                - applyServerSideEncryptionByDefault:
-                    sseAlgorithm: AES256
+            region: eu-central-1          
+            objectLockEnabled: false
           providerConfigRef:
-            name: providerconfig-aws          
+            name: default
       patches:
-        - fromFieldPath: "spec.parameters.bucketName"
+        - type: FromCompositeFieldPath
+          fromFieldPath: "spec.parameters.bucketName"
           toFieldPath: "metadata.name"
-        - fromFieldPath: "metadata.annotations.crossplane.io/external-name"
-          toFieldPath: "metadata.annotations.crossplane.io/external-name"
-        - fromFieldPath: "spec.parameters.region"
-          toFieldPath: "spec.forProvider.locationConstraint"
+        - type: FromCompositeFieldPath
+          fromFieldPath: "metadata.labels"
+          toFieldPath: "metadata.labels"
+        - type: FromCompositeFieldPath
+          fromFieldPath: "metadata.annotations"
+          toFieldPath: "metadata.annotations"
+        - type: FromCompositeFieldPath
+          fromFieldPath: "spec.parameters.region"
+          toFieldPath: "spec.forProvider.region"
+    - name: encryption
+      base:
+        apiVersion: s3.aws.upbound.io/v1beta1
+        kind: BucketServerSideEncryptionConfiguration
+        spec:
+          forProvider:
+            region: eu-central-1
+            rule:
+              - applyServerSideEncryptionByDefault:
+                  - sseAlgorithm: AES256
+      patches:
+        - type: FromCompositeFieldPath
+          fromFieldPath: "spec.parameters.bucketName"
+          toFieldPath: "metadata.name"
+          transforms:
+            - type: string
+              string:
+                type: Format
+                fmt: "%s-sse"
+        - type: FromCompositeFieldPath
+          fromFieldPath: "metadata.labels"
+          toFieldPath: "spec.forProvider.bucketSelector.matchLabels"
+        - type: FromCompositeFieldPath
+          fromFieldPath: "spec.parameters.region"
+          toFieldPath: "spec.forProvider.region"
+    - name: lifecycle
+      base:
+        apiVersion: s3.aws.upbound.io/v1beta1
+        kind: BucketLifecycleConfiguration
+        spec:
+          forProvider:
+            region: eu-central-1
+            rule:
+              - id: 90-days-rule
+                expiration:
+                  - days: 90
+                status: Enabled
+      patches:
+        - type: FromCompositeFieldPath
+          fromFieldPath: "spec.parameters.bucketName"
+          toFieldPath: "metadata.name"
+          transforms:
+            - type: string
+              string:
+                type: Format
+                fmt: "%s-lifecycle"
+        - type: FromCompositeFieldPath
+          fromFieldPath: "metadata.labels"
+          toFieldPath: "spec.forProvider.bucketSelector.matchLabels"
+        - type: FromCompositeFieldPath
+          fromFieldPath: "spec.parameters.region"
+          toFieldPath: "spec.forProvider.region"

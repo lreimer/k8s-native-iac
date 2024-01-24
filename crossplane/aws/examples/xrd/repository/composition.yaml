@@ -3,9 +3,6 @@ apiVersion: apiextensions.crossplane.io/v1
 kind: Composition
 metadata:
   name: xrepositories.ecr.aws.qaware.de
-  labels:
-    provider: aws
-    service: ecr
 spec:
   compositeTypeRef:
     apiVersion: ecr.aws.qaware.de/v1beta1
@@ -13,19 +10,23 @@ spec:
   resources:
     - name: repository
       base:
-        apiVersion: ecr.aws.crossplane.io/v1beta1
+        apiVersion: ecr.aws.upbound.io/v1beta1
         kind: Repository
         spec:
           deletionPolicy: Delete
           forProvider:
             forceDelete: true
+            encryptionConfiguration:
+              - encryptionType: AES256
             imageScanningConfiguration:
-              scanOnPush: true
+              - scanOnPush: true
             imageTagMutability: IMMUTABLE
           providerConfigRef:
-            name: providerconfig-aws
+            name: default
       patches:
-        - fromFieldPath: "spec.parameters.repositoryName"
+        - type: FromCompositeFieldPath
+          fromFieldPath: "spec.parameters.repositoryName"
           toFieldPath: "metadata.name"
-        - fromFieldPath: "spec.parameters.region"
+        - type: FromCompositeFieldPath
+          fromFieldPath: "spec.parameters.region"
           toFieldPath: "spec.forProvider.region"

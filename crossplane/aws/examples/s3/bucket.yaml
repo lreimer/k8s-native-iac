@@ -10,7 +10,7 @@ spec:
   deletionPolicy: Delete
   forProvider:
     region: eu-central-1
-    objectLockEnabled: true
+    objectLockEnabled: false
     tags:
       Name: ExampleBucket
   providerConfigRef:

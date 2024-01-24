@@ -2,8 +2,8 @@ apiVersion: ecr.aws.qaware.de/v1beta1
 kind: Repository
 metadata:
   namespace: default
-  name: cnn-mainz-repository
+  name: example-xrd-repository
 spec:
   parameters:
-    repositoryName: cnn-mainz-repository
+    repositoryName: example-xrd-repository
     region: eu-central-1

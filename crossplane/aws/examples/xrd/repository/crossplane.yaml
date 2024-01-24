@@ -1,13 +1,10 @@
 apiVersion: meta.pkg.crossplane.io/v1alpha1
 kind: Configuration
 metadata:
-  name: aws-ecr
-  annotations:
-    provider: aws
-    service: ecr
+  name: xrd-repository-configuration
 spec:
-  crossplane:
-    version: ">=v1.2.0-0"
   dependsOn:
-    - provider: crossplane/provider-aws
-      version: ">=v0.23.0-0"
+    - provider: xpkg.upbound.io/upbound/provider-aws-ecr
+      version: ">=v0.47.0-0"
+  crossplane:
+    version: ">=v1.14.0-0"

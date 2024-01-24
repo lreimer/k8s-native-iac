@@ -1,11 +1,12 @@
 apiVersion: s3.aws.qaware.de/v1beta1
 kind: Bucket
 metadata:
-  namespace: default
-  name: cnn-mainz-bucket-eu-central-1
+  name: example-xrd-bucket
   annotations:
-    crossplane.io/external-name: cnn-mainz-bucket-eu-central-1
+    crossplane.io/external-name: example-xrd-bucket-eu-central-1
+  labels:
+    app.kubernetes.io/name: example-xrd
 spec:
   parameters:
-    bucketName: cnn-mainz-bucket-eu-central-1
+    bucketName: example-xrd-bucket
     region: eu-central-1
