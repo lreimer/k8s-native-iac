@@ -74,8 +74,14 @@ kubectl annotate namespace default cnrm.cloud.google.com/project-id="cloud-nativ
 cd applications/gke-cluster/
 kubectl apply -f config-connector/storagebucket.yaml
 
+kubectl get storagebucket -n config-connector
+kubectl describe storagebucket k8s-native-iac-lab-demo -n config-connector
+
 gcloud storage buckets list
 open https://console.cloud.google.com/storage/browser?project=cloud-native-experience-lab
+
+kubectl delete -f config-connector/storagebucket.yaml
+gcloud storage buckets list
 ```
 
 ## AWS Controllers for Kubernetes (ACK) Demo

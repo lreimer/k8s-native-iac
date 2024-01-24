@@ -5,10 +5,14 @@ metadata:
   name: k8s-native-iac-lab-demo
   namespace: config-connector
   annotations:
-    cnrm.cloud.google.com/force-destroy: "false"
+    # delete the bucket when the resource is deleted or not (abandon)
+    cnrm.cloud.google.com/deletion-policy: "none"
+    # delete all files in the bucket when the bucket is deleted
+    cnrm.cloud.google.com/force-destroy: "true"
   labels:
     stage: demo
 spec:
+  location: EU
   lifecycleRule:
     - action:
         type: Delete
