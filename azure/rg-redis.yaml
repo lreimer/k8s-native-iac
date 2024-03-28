@@ -1,0 +1,36 @@
+---
+apiVersion: resources.azure.com/v1api20200601
+kind: ResourceGroup
+metadata:
+  name: rg-redis-demo
+  namespace: default
+spec:
+  location: westcentralus
+---
+apiVersion: cache.azure.com/v1api20201201
+kind: Redis
+metadata:
+  name: redis-demo
+  namespace: default
+spec:
+  location: westcentralus
+  owner:
+    name: rg-redis-demo
+  sku:
+    family: C
+    name: Basic
+    capacity: 0
+  enableNonSslPort: true
+  minimumTlsVersion: "1.2"
+  redisConfiguration:
+    maxmemory-delta: "10"
+    maxmemory-policy: allkeys-lru
+  redisVersion: "6"
+  operatorSpec: 
+    secrets:
+      hostName:
+        name: redis-hostname
+        key: hostName
+      primaryKey:
+        name: redis-access-key
+        key: primaryKey
